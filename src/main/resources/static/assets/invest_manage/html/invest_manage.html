@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="app-ui">
+<html class="app-ui" xmlns:v-on="http://www.w3.org/1999/xhtml">
 
 <head>
     <!-- Meta -->
@@ -157,7 +157,6 @@
 
                 <div class="row">
                     <div class="col-lg-6">
-                        <!-- Hover Table -->
                         <div class="col-sm-6 col-lg-3">
                             <!-- From Right Modal -->
                             <div class="card">
@@ -169,24 +168,23 @@
                             </div>
                             <!-- End From Right Modal -->
                         </div>
+                        <!-- Hover Table -->
                         <div class="card">
-                            <div class="card-header">
-                                <h4>Hover Table</h4>
-                                <div class="card-actions">
-                                    <code>.table-hover</code>
-                                </div>
-                            </div>
                             <div class="card-block">
-                                <table class="table table-hover">
+                                <table class="table table-bordered table-striped table-vcenter js-dataTable-full">
                                     <thead>
                                     <tr>
                                         <th class="text-center" style="width: 50px;">#</th>
-                                        <th scope="col">姓名</th>
-                                        <th scope="col">手机号</th>
-                                        <th class="text-center" style="width: 100px;">Actions</th>
+                                        <th v-for="(item, index) in userList" scope="col">{{ item.name }}</th>
+                                        <th class="text-center">总投入</th>
+                                        <th class="text-center">总盈亏</th>
+                                        <th class="text-center">收益率</th>
+                                        <th class="text-center">抽水比例</th>
+                                        <th class="text-center">抽水数额</th>
+                                        <th class="text-center">操作</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <!--<tbody>
                                     <tr v-for="(item, index) in userList">
                                         <th scope="row">{{ index + 1 }}</th>
                                         <td>{{ item.name }}</td>
@@ -202,8 +200,32 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    </tbody>
+                                    </tbody>-->
                                 </table>
+                                <!--分页-->
+                                <div class="pager" id="pager" style="text-align: center">
+                                    <span>
+                                        <select class="btn btn-outline-dark dropdown-toggle btn-sm" v-model="pageSize" v-on:change="showPage(pageCurrent,$event,true)" number>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="30">30</option>
+                                            <option value="40">40</option>
+                                        </select>
+                                    </span>
+                                    <span v-for="item in pageCount">
+                                        <span v-if="item==1" class="btn btn-outline-dark btn-sm" v-on:click="showPage(1,$event)" :class="{'disabled':fDisabled}">首页</span>
+                                        <span v-if="item==1" class="btn btn-outline-dark btn-sm" v-on:click="showPage(pageCurrent-1,$event)" :class="{'disabled':fDisabled}">上一页</span>
+                                        <span v-if="item==1" class="btn btn-outline-dark btn-sm" v-on:click="showPage(item,$event)">{{item}}</span>
+                                        <span v-if="item==1&&item<showPagesStart-1" class="btn btn-outline-dark btn-sm disabled">...</span>
+                                        <span v-if="item>1&&item<=pageCount-1&&item>=showPagesStart&&item<=showPageEnd&&item<=pageCount" class="btn btn-outline-dark btn-sm" v-on:click="showPage(item,$event)">{{item}}</span>
+                                        <span v-if="item==pageCount&&item>showPageEnd+1" class="btn btn-outline-dark btn-sm disabled">...</span>
+                                        <span v-if="item==pageCount&&pageCount!=1" class="btn btn-outline-dark btn-sm" v-on:click="showPage(item,$event)">{{item}}</span>
+                                        <span v-if="item==pageCount" class="btn btn-outline-dark btn-sm" v-on:click="showPage(pageCurrent+1,$event)" :class="{'disabled':lDisabled}">下一页</span>
+                                        <span v-if="item==pageCount" class="btn btn-outline-dark btn-sm" v-on:click="showPage(pageCount,$event)" :class="{'disabled':lDisabled}">尾页</span>
+                                        </span>
+                                        <span class="btn btn-outline-dark btn-sm disabled">{{pageCurrent}}/{{pageCount}}</span>
+                                </div>
+                                <!--分页-->
                             </div>
                             <!-- .card-block -->
                         </div>
@@ -249,7 +271,8 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-sm btn-default" type="button" data-dismiss="modal">Close</button>
-                    <button class="btn btn-sm btn-app" type="button" data-dismiss="modal"  @click="saveInvest"><i class="ion-checkmark"></i>
+                    <button class="btn btn-sm btn-app" type="button" data-dismiss="modal" @click="saveInvest"><i
+                            class="ion-checkmark"></i>
                         Ok
                     </button>
                 </div>

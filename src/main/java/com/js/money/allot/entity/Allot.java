@@ -1,8 +1,10 @@
 package com.js.money.allot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.js.money.Invest.entity.Invest;
 import com.js.money.util.TimeUtils;
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
  * @Return:
  * @Description: 结算总表
  */
+
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 @Entity
 @Table(name = "allot")
 public class Allot {
@@ -38,6 +42,11 @@ public class Allot {
     private double trueRate; //实际收益比
     @Column(name = "flag")
     private boolean flag;    //结算标志
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    public Allot() {
+    }
 
     public Allot(double pumpRate, List<Invest> invests, double totalOutput, boolean flag) {
         if (totalOutput >= 0) {
@@ -57,6 +66,16 @@ public class Allot {
             invest.setYieldRate(trueRate);
             invest.setUpdateTime(TimeUtils.getCurrentTime());
         }).collect(Collectors.toList());
+        this.updateTime = TimeUtils.getCurrentTime();
+    }
+
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public long getAllotId() {

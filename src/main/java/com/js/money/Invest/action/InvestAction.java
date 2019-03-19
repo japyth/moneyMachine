@@ -25,22 +25,5 @@ public class InvestAction {
     private IUserService userService;
     @Resource
     private IInvestService investService;
-    @RequestMapping("/saveInvest")
-    public BaseResponse saveInvest(@RequestBody List<SaveInvestDto> saveInvestDtos) {
-        if(!CollectionUtils.isEmpty(saveInvestDtos)) {
-            List<Invest> investList = new ArrayList<>();
-            for (SaveInvestDto saveInvestDto : saveInvestDtos) {
-                User user = userService.getUserById(saveInvestDto.getUserId());
-                if(!StringUtils.isEmpty(saveInvestDto.getInput())) {
-                    double input = Double.valueOf(saveInvestDto.getInput());
-                    investList.add(new Invest(user,input));
-                }
-            }
-            if(!CollectionUtils.isEmpty(investList)) {
-                investService.saveInvest(investList);
-            }
-        }
-        return new BaseResponse();
-    }
 
 }

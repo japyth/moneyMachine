@@ -1,11 +1,13 @@
 package com.js.money.Invest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.js.money.user.entity.User;
 import com.js.money.util.TimeUtils;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 @Entity
 @Table(name="invest")
 public class Invest {
@@ -26,6 +28,9 @@ public class Invest {
     private Date pokerDate;
     @Column(name="update_date")
     private Date updateTime;
+
+    public Invest() {
+    }
 
     public Invest(User user, double input) {
         this.user = user;

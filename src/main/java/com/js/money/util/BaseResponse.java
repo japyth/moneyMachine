@@ -14,10 +14,6 @@ public class BaseResponse {
 
     private String errorMessage;
 
-    private String username;
-
-    private List<String> roles;
-
     public BaseResponse() {
         result = true;
         errorCode = ResponseConst.NO_ERROR_CODE;
@@ -35,32 +31,6 @@ public class BaseResponse {
         this.result = result;
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
-    }
-
-    public BaseResponse(Object data, String username,List<String> roles) {
-        this.data = data;
-        this.username = username;
-        this.roles = roles;
-        result = true;
-        errorCode = ResponseConst.NO_ERROR_CODE;
-        errorMessage = ResponseConst.SUCCESS;
-    }
-
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
     }
 
     public Object getData() {
